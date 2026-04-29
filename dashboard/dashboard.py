@@ -5,7 +5,7 @@ import pandas as pd
 # CONFIG FIRST (important)
 st.set_page_config(page_title="Air Quality System", layout="centered")
 
-API = "http://127.0.0.1:8000"
+API = "https://air-quality-system-k67z.onrender.com/"
 
 st.title("🌍 Air Quality Monitoring System")
 
