@@ -1,15 +1,9 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from app.model import predict_aqi
-from app.utils import data_store
+from app.models import AQData
+from app.crud import save_data, get_latest
+from app.ml_model import predict
 
 app = FastAPI()
-
-class AQData(BaseModel):
-    pm25: float
-    pm10: float
-    no2: float
-    co: float
 
 @app.get("/")
 def home():
@@ -17,16 +11,17 @@ def home():
 
 @app.post("/add-data")
 def add_data(data: AQData):
-    data_store.append(data.dict())
-    return {"status": "Data added", "data": data}
+    save_data(data.dict())
+    return {"status": "saved"}
 
 @app.get("/latest")
-def get_latest():
-    if not data_store:
-        return {"error": "No data"}
-    return data_store[-1]
+def latest():
+    data = get_latest()
+    if not data:
+        return {"error": "no data"}
+    return data.__dict__
 
 @app.post("/predict")
-def predict(data: AQData):
-    prediction = predict_aqi(data.dict())
-    return {"predicted_aqi": prediction}
+def predict_api(data: AQData):
+    result = predict(data.dict())
+    return {"aqi": result}

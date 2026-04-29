@@ -1,3 +1,11 @@
 fastapi
 uvicorn
 pydantic
+sqlalchemy
+psycopg2-binary
+scikit-learn
+joblib
+pandas
+numpy
+streamlit
+requests
